@@ -1,0 +1,22 @@
+{
+  "name": "mini_project_nodejs",
+  "version": "1.0.0",
+  "description": "mini project merchants",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuki216/mini_project_nodejs.git"
+  },
+  "author": "Yuki Fachriansyah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuki216/mini_project_nodejs/issues"
+  },
+  "homepage": "https://github.com/yuki216/mini_project_nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
