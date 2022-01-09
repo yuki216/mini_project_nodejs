@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/yuki216/mini_project_nodejs#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.12.5"
   }
 }
