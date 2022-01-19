@@ -10,7 +10,7 @@ const Merchant = Database.define(`merchants`, {
     phone_number:{
         type:Sequelize.STRING,  
     },
-    passsword:{
+    password:{
         type:Sequelize.STRING,        
     },
     name:{

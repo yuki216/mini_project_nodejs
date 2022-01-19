@@ -1,25 +1,45 @@
 const merchant = require(`../models/merchant`)
-
-//service
-const Sequelize = require(`sequelize`);
-const Op = Sequelize.Op;
-const sequelize = require(`../infratructures/database`);
+const bcrypt = require('bcrypt');
+//validator
+const Validator = require('fastest-validator');
+const v = new Validator();
 
 module.exports = {
     register: async (req, res) => {
-        const data = await merchant.create({
+        const schema = {
+            phone_number: 'string|empty:false',
+            password: 'string|empty:false',
+            name: 'string|empty:false',
+            address: 'string|empty:false',
+            join_date: 'string|empty:false'
+          }
+        
+          const validate = v.validate(req.body, schema);
+        
+          if (validate.length) {
+            return res.status(400).json({
+                "code" : "error",
+                "Message" : validate,
+            });
+        }
+
+
+        const password = await bcrypt.hash(req.body.password, 10);
+        console.log(password)
+        await merchant.create({
             phone_number: req.body.phone_number,
-            password: req.body.password,
+            password: password,
             name:req.body.name,
             address:req.body.address,
             join_date:req.body.join_date
-        }).then(function(){
+        }).then(function(data){
             res.json({
                 "code" : "success",
                 "Message" : "Created merchant success.",
                 "merchant" : data
             });
         }).catch(function (err) {
+            console.log(err)
             res.status(500).json({
                 "code" : "error",
                 "Message" : err.parent.sqlMessage

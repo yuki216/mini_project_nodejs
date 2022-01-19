@@ -1,12 +1,26 @@
 const product = require(`../models/product`)
 
-//service
-const Sequelize = require(`sequelize`);
-const Op = Sequelize.Op;
-const sequelize = require(`../infratructures/database`);
+//validator
+const Validator = require('fastest-validator');
+const v = new Validator();
 
 module.exports = {
     add: async (req, res) => {
+        const schema = {
+            name: 'string|empty:false',
+            quantity: 'number|empty:false|min:1',
+            price: 'number|empty:false'
+          }
+        
+          const validate = v.validate(req.body, schema);
+        
+          if (validate.length) {
+            return res.status(400).json({
+                "code" : "error",
+                "Message" : validate,
+            });
+        }
+
         await product.create({
             name:req.body.name,
             quantity:req.body.quantity,
@@ -48,9 +62,25 @@ module.exports = {
     },
 
     update: async (req, res) => {
+        const schema = {
+            id:'number|empty:false',
+            name: 'string|empty:false',
+            quantity: 'number|empty:false|min:1',
+            price: 'number|empty:false'
+          }
+        
+          const validate = v.validate(req.body, schema);
+        
+          if (validate.length) {
+            return res.status(400).json({
+                "code" : "error",
+                "Message" : validate,
+            });
+        }
+
         const dataProduct = await product.findOne({
             where: {
-              id: parseInt(req.params.id || req.body.id),
+              id: parseInt(req.body.id),
             },
           });
       
