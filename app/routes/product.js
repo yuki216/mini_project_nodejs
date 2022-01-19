@@ -1,20 +1,12 @@
 const express = require("express");
-const router = express.Router();
+var router = express.Router();
+const productHandler = require(`../handler/ProductHandler`)
 
-router.post("/add",(req,res)=>{
-    res.status(200).send("success")
-})
-router.delete("/delete",(req,res)=>{
-    res.status(200).send("success")
-})
-router.put("/update",(req,res)=>{
-    res.status(200).send("success")
-})
-router.get("/get",(req,res)=>{
-    res.status(200).send("success")
-})
-router.get("/get/:id",(req,res)=>{
-    res.status(200).send("success")
-})
+
+    router.post("/product", productHandler.add)
+    router.delete("/product/:id", productHandler.delete)
+    router.put("/product",productHandler.update)
+    router.get("/product",productHandler.list)
+    router.get("/product/:id",productHandler.get)
 
 module.exports = router;

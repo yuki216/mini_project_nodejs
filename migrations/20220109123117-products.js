@@ -11,7 +11,8 @@ module.exports = {
           primaryKey: true,
         },
         name:{
-          type:Sequelize.STRING,        
+          type:Sequelize.STRING,   
+          unique:true,           
         },
         quantity:{
           type:Sequelize.INTEGER,        
