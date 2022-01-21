@@ -5,6 +5,50 @@ const Validator = require('fastest-validator');
 const v = new Validator();
 
 module.exports = {
+    login: async (req, res, next) => {
+          // parse login and password from headers
+            const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+            const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')           
+
+          const user = await merchant.findOne({
+            where: { phone_number: login }
+          });
+        
+          if (!user) {
+            return res.status(404).json({
+              status: 'error',
+              message: 'user not found'
+            });
+          }
+
+        
+          const isValidPassword = await bcrypt.compare(password, user.password);
+          console.log(isValidPassword, password)
+          if (!isValidPassword) {            
+            res.set('WWW-Authenticate', 'Basic realm="401"') 
+           return  res.status(401).send('Authentication required.') 
+          }
+        
+          res.cookie('uid', user.id)
+          res.cookie('name', user.name)
+          return res.json({
+            code: 'success',
+            message:'login success',
+            data: {
+              id: user.id,
+              name: user.name
+            }
+          });
+    },
+    logout: async (req,res) => {
+      res.clearCookie('uid')      
+      res.clearCookie('name')  
+      return res.json({
+        code: 'success',
+        message:'cookie was cleared',
+        data: []
+      });
+    },
     register: async (req, res) => {
         const schema = {
             phone_number: 'string|empty:false',
