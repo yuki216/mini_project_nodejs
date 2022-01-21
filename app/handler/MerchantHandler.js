@@ -26,7 +26,10 @@ module.exports = {
           console.log(isValidPassword, password)
           if (!isValidPassword) {            
             res.set('WWW-Authenticate', 'Basic realm="401"') 
-           return  res.status(401).send('Authentication required.') 
+           return res.status(401).json({
+            "code" : "error",
+            "message" : "Authentication required.",
+        });
           }
         
           res.cookie('uid', user.id)
@@ -58,18 +61,16 @@ module.exports = {
             join_date: 'string|empty:false'
           }
         
-          const validate = v.validate(req.body, schema);
+        const validate = v.validate(req.body, schema);
         
           if (validate.length) {
             return res.status(400).json({
                 "code" : "error",
-                "Message" : validate,
+                "message" : validate,
             });
         }
 
-
         const password = await bcrypt.hash(req.body.password, 10);
-        console.log(password)
         await merchant.create({
             phone_number: req.body.phone_number,
             password: password,
@@ -79,14 +80,14 @@ module.exports = {
         }).then(function(data){
             res.json({
                 "code" : "success",
-                "Message" : "Created merchant success.",
+                "message" : "Created merchant success.",
                 "merchant" : data
             });
         }).catch(function (err) {
             console.log(err)
-            res.status(500).json({
+            res.status(400).json({
                 "code" : "error",
-                "Message" : err.parent.sqlMessage
+                "message" : err.parent.sqlMessage
             })
         });
     },
@@ -98,15 +99,15 @@ module.exports = {
             },
           };
       
-          const deleteMerchant = await merchant.destroy(dataMerchant).then(function(item){
-                res.status((item === 0)?500:200).json({
+        await merchant.destroy(dataMerchant).then(function(item){
+                res.status((item === 0)?404:200).json({
                     "code" : (item === 0)?"error":"success",
-                    "Message" : (item === 0)?"ID Not Found.":"Delete merchant success."
+                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success."
                 });
             }).catch(function (err) {
-                res.status(500).json({
+                res.status(400).json({
                     "code" : "error",
-                    "Message" : err
+                    "message" : err
                 })
             });
        

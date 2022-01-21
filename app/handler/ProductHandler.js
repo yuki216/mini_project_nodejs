@@ -17,7 +17,7 @@ module.exports = {
           if (validate.length) {
             return res.status(400).json({
                 "code" : "error",
-                "Message" : validate,
+                "message" : validate,
             });
         }
 
@@ -28,14 +28,14 @@ module.exports = {
         }).then(function(data){
             res.json({
                 "code" : "success",
-                "Message" : "Created product success.",
+                "message" : "Created product success.",
                 "product" : data
             });
         }).catch(function (err) {
-            console.log(err)
-            res.status(500).json({
+            //console.log(err)
+            res.status(400).json({
                 "code" : "error",
-                "Message" : err.parent.sqlMessage
+                "message" : err.parent.sqlMessage
             })
         });
     },
@@ -48,14 +48,14 @@ module.exports = {
           };
       
           await product.destroy(dataProduct).then(function(item){
-                res.status((item === 0)?500:200).json({
+                res.status((item === 0)?404:200).json({
                     "code" : (item === 0)?"error":"success",
-                    "Message" : (item === 0)?"ID Not Found.":"Delete product success."
+                    "message" : (item === 0)?"ID Not Found.":"Delete product success."
                 });
             }).catch(function (err) {
-                res.status(500).json({
+                res.status(400).json({
                     "code" : "error",
-                    "Message" : err
+                    "message" : err
                 })
             });
        
@@ -74,7 +74,7 @@ module.exports = {
           if (validate.length) {
             return res.status(400).json({
                 "code" : "error",
-                "Message" : validate,
+                "message" : validate,
             });
         }
 
@@ -85,9 +85,9 @@ module.exports = {
           });
       
           if (!dataProduct) {
-            return res.status(500).json({
+            return res.status(404).json({
                 "code" : "error",
-                "Message" : "ID Not Found."
+                "message" : "ID Not Found."
             })
           }
 
@@ -96,14 +96,14 @@ module.exports = {
         dataProduct.price = req.body.price || dataProduct.price;
 
         await dataProduct.save().then(function(item){
-            res.status((item === 0)?500:200).json({
+            res.status((item === 0)?404:200).json({
                 "code" : (item === 0)?"error":"success",
-                "Message" : (item === 0)?"ID Not Found.":"Update product success."
+                "message" : (item === 0)?"ID Not Found.":"Update product success."
             });
         }).catch(function (err) {
-            res.status(500).json({
+            res.status(400).json({
                 "code" : "error",
-                "Message" : err
+                "message" : err
             })
         });
        
@@ -117,15 +117,15 @@ module.exports = {
           };
       
           await product.findOne(dataProduct).then(function(item){
-                res.status((item === 0)?500:200).json({
+                res.status((item === 0)?404:200).json({
                     "code" : (item === 0)?"error":"success",
-                    "Message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
+                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
                     "data": item
                 });
             }).catch(function (err) {
-                res.status(500).json({
+                res.status(400).json({
                     "code" : "error",
-                    "Message" : err
+                    "message" : err
                 })
             });
        
@@ -135,15 +135,15 @@ module.exports = {
              
           await product.findAll().then(function(item){
               console.log(item)
-                res.status((item === 0)?500:200).json({
+                res.status((item === 0)?404:200).json({
                     "code" : (item === 0)?"error":"success",
-                    "Message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
+                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
                     "data": item
                 });
             }).catch(function (err) {
-                res.status(500).json({
+                res.status(400).json({
                     "code" : "error",
-                    "Message" : err
+                    "message" : err
                 })
             });
        

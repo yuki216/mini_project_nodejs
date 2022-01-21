@@ -1,9 +1,12 @@
 var Auth = {
     check_login: function (req, res, next)
     {
-        console.log(req.cookies)
+        //console.log(req.cookies)
         if (!req.cookies.uid) {
-            console.log("OK")
+            return res.status(401).json({
+                "code" : "error",
+                "message" : "unauthorized",
+            });
         }
 
         next();
