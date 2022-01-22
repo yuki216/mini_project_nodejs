@@ -16,6 +16,15 @@ const Product = Database.define(`products`, {
     price:{
         type:Sequelize.DOUBLE,        
     },
+    merchant_id:{
+        type:Sequelize.INTEGER,    
+        references: {
+            model: `merchants`,
+            key: `id`,
+          },
+          onUpdate: `NO ACTION`,
+          onDelete: `CASCADE`,    
+    },
 })
 
 module.exports = Product;

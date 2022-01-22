@@ -4,10 +4,12 @@ var Auth = {
         //console.log(req.cookies)
         if (!req.cookies.uid) {
             return res.status(401).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : "unauthorized",
             });
         }
+
+        //check authorithy db must be exist
 
         next();
     },

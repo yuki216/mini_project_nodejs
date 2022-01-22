@@ -12,7 +12,7 @@ module.exports = {
         },
         name:{
           type:Sequelize.STRING,   
-          unique:true,           
+          //unique:true,           
         },
         quantity:{
           type:Sequelize.INTEGER,        
@@ -20,6 +20,10 @@ module.exports = {
         price:{
           type:Sequelize.DOUBLE,        
         },
+        merchant_id:{
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        }
       });
   },
 

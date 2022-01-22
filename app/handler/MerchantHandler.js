@@ -16,18 +16,18 @@ module.exports = {
         
           if (!user) {
             return res.status(404).json({
-              status: 'error',
-              message: 'user not found'
+              "status": 'error',
+              "message": 'user not found'
             });
           }
 
         
           const isValidPassword = await bcrypt.compare(password, user.password);
-          console.log(isValidPassword, password)
+          //console.log(isValidPassword, password)
           if (!isValidPassword) {            
             res.set('WWW-Authenticate', 'Basic realm="401"') 
            return res.status(401).json({
-            "code" : "error",
+            "status" : "error",
             "message" : "Authentication required.",
         });
           }
@@ -35,9 +35,9 @@ module.exports = {
           res.cookie('uid', user.id)
           res.cookie('name', user.name)
           return res.json({
-            code: 'success',
-            message:'login success',
-            data: {
+            "status": 'success',
+            "message":'login success',
+            "data": {
               id: user.id,
               name: user.name
             }
@@ -47,9 +47,8 @@ module.exports = {
       res.clearCookie('uid')      
       res.clearCookie('name')  
       return res.json({
-        code: 'success',
-        message:'cookie was cleared',
-        data: []
+        "status": 'success',
+        "message":'cookie was cleared'
       });
     },
     register: async (req, res) => {
@@ -65,7 +64,7 @@ module.exports = {
         
           if (validate.length) {
             return res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : validate,
             });
         }
@@ -79,14 +78,14 @@ module.exports = {
             join_date:req.body.join_date
         }).then(function(data){
             res.json({
-                "code" : "success",
+                "status" : "success",
                 "message" : "Created merchant success.",
-                "merchant" : data
+                "data" : data
             });
         }).catch(function (err) {
             console.log(err)
             res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : err.parent.sqlMessage
             })
         });
@@ -101,12 +100,12 @@ module.exports = {
       
         await merchant.destroy(dataMerchant).then(function(item){
                 res.status((item === 0)?404:200).json({
-                    "code" : (item === 0)?"error":"success",
+                    "status" : (item === 0)?"error":"success",
                     "message" : (item === 0)?"ID Not Found.":"Delete merchant success."
                 });
             }).catch(function (err) {
                 res.status(400).json({
-                    "code" : "error",
+                    "status" : "error",
                     "message" : err
                 })
             });

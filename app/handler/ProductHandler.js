@@ -16,7 +16,7 @@ module.exports = {
         
           if (validate.length) {
             return res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : validate,
             });
         }
@@ -24,17 +24,17 @@ module.exports = {
         await product.create({
             name:req.body.name,
             quantity:req.body.quantity,
-            price:req.body.price
+            price:req.body.price,
+            merchant_id:req.cookies.uid
         }).then(function(data){
             res.json({
-                "code" : "success",
+                "status" : "success",
                 "message" : "Created product success.",
                 "product" : data
             });
         }).catch(function (err) {
-            //console.log(err)
             res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : err.parent.sqlMessage
             })
         });
@@ -49,12 +49,12 @@ module.exports = {
       
           await product.destroy(dataProduct).then(function(item){
                 res.status((item === 0)?404:200).json({
-                    "code" : (item === 0)?"error":"success",
+                    "status" : (item === 0)?"error":"success",
                     "message" : (item === 0)?"ID Not Found.":"Delete product success."
                 });
             }).catch(function (err) {
                 res.status(400).json({
-                    "code" : "error",
+                    "status" : "error",
                     "message" : err
                 })
             });
@@ -73,7 +73,7 @@ module.exports = {
         
           if (validate.length) {
             return res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : validate,
             });
         }
@@ -86,7 +86,7 @@ module.exports = {
       
           if (!dataProduct) {
             return res.status(404).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : "ID Not Found."
             })
           }
@@ -97,12 +97,12 @@ module.exports = {
 
         await dataProduct.save().then(function(item){
             res.status((item === 0)?404:200).json({
-                "code" : (item === 0)?"error":"success",
+                "status" : (item === 0)?"error":"success",
                 "message" : (item === 0)?"ID Not Found.":"Update product success."
             });
         }).catch(function (err) {
             res.status(400).json({
-                "code" : "error",
+                "status" : "error",
                 "message" : err
             })
         });
@@ -118,13 +118,13 @@ module.exports = {
       
           await product.findOne(dataProduct).then(function(item){
                 res.status((item === 0)?404:200).json({
-                    "code" : (item === 0)?"error":"success",
+                    "status" : (item === 0)?"error":"success",
                     "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
                     "data": item
                 });
             }).catch(function (err) {
                 res.status(400).json({
-                    "code" : "error",
+                    "status" : "error",
                     "message" : err
                 })
             });
@@ -136,13 +136,13 @@ module.exports = {
           await product.findAll().then(function(item){
               console.log(item)
                 res.status((item === 0)?404:200).json({
-                    "code" : (item === 0)?"error":"success",
+                    "status" : (item === 0)?"error":"success",
                     "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
                     "data": item
                 });
             }).catch(function (err) {
                 res.status(400).json({
-                    "code" : "error",
+                    "status" : "error",
                     "message" : err
                 })
             });
