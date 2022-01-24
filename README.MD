@@ -31,6 +31,6 @@ This mini project for RestFul Api using Node JS and Javascript.
 
     //command for run normal
     npm run start 
-
-
 ```
+## Api Documentation
+you can see all api documentation on file spec.md
