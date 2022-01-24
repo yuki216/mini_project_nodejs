@@ -119,7 +119,7 @@ module.exports = {
           await product.findOne(dataProduct).then(function(item){
                 res.status((item === 0)?404:200).json({
                     "status" : (item === 0)?"error":"success",
-                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
+                    "message" : (item === 0)?"ID Not Found.":"",
                     "data": item
                 });
             }).catch(function (err) {
@@ -137,7 +137,7 @@ module.exports = {
               console.log(item)
                 res.status((item === 0)?404:200).json({
                     "status" : (item === 0)?"error":"success",
-                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success.",
+                    "message" : (item === 0)?"ID Not Found.":"",
                     "data": item
                 });
             }).catch(function (err) {

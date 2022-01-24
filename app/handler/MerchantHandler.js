@@ -29,7 +29,7 @@ module.exports = {
            return res.status(401).json({
             "status" : "error",
             "message" : "Authentication required.",
-        });
+            });
           }
         
           res.cookie('uid', user.id)
