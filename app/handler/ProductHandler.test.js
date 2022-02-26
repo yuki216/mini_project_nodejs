@@ -5,18 +5,17 @@ const httpMocks = require("node-mocks-http");
 const { get, list, add, update, deleted } = require("./ProductHandler");
 
 const mockFindOneProduct = jest.fn();
-jest.mock("../../app/models/product", () => {
+jest.mock("../../app/storages", () => {
     return {
+        models: {
             product: {  
                 findOne: () => mockFindOneProduct(),
                 findAll: () => mockFindOneProduct(),
                 create: () => mockFindOneProduct(),
                 destroy: () => mockFindOneProduct(),
-                save: () => mockFindOneProduct()
-            },
-            dataProduct:{
-                save: () => mockFindOneProduct()
+                update: () => mockFindOneProduct()
             }
+        }
     };
 });
 
@@ -177,14 +176,7 @@ jest.mock("../../app/models/product", () => {
     expect(response.statusCode).toEqual(200);
     expect(response._getJSONData()).toEqual({
         "status" : "success",
-        "message" : "Created product success.",
-        "product" : {
-            "id": "1",
-            "name": "Warteg Kharisma Bahari",
-            "quantity": 20,
-            "price": 6000,
-            "merchant_id":1
-        }
+        "message" : "Update product success."
     });
    });
    

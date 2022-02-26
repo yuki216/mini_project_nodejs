@@ -1,4 +1,4 @@
-const {product} = require(`../models/product`)
+const {models} = require(`../storages`)
 
 //validator
 const Validator = require('fastest-validator');
@@ -21,7 +21,7 @@ module.exports = {
             });
         }
 
-        await product.create({
+        await models.product.create({
             name:req.body.name,
             quantity:req.body.quantity,
             price:req.body.price,
@@ -47,7 +47,7 @@ module.exports = {
             },
           };
       
-          await product.destroy(dataProduct).then(function(item){
+          await models.product.destroy(dataProduct).then(function(item){
                 res.status((item === 0)?404:200).json({
                     "status" : (item === 0)?"error":"success",
                     "message" : (item === 0)?"ID Not Found.":"Delete product success."
@@ -78,7 +78,7 @@ module.exports = {
             });
         }
 
-        const dataProduct = await product.findOne({
+        const dataProduct = await models.product.findOne({
             where: {
               id: parseInt(req.body.id),
             },
@@ -91,11 +91,10 @@ module.exports = {
             })
           }
 
-        dataProduct.name = req.body.name || dataProduct.name;
-        dataProduct.quantity = req.body.quantity || dataProduct.quantity;
-        dataProduct.price = req.body.price || dataProduct.price;
-
-        await dataProduct.save().then(function(item){
+        await models.product.update(
+            req.body,
+            { where: { id: dataProduct.id  } }
+        ).then(function(item){
             res.status((item)?200:404).json({
                 "status" : (item)?"success":"error",
                 "message" : (item)?"Update product success.":"ID Not Found."
@@ -105,8 +104,7 @@ module.exports = {
                 "status" : "error",
                 "message" : err
             })
-        });
-       
+        });       
     },
 
     get: async (req, res) => {
@@ -116,8 +114,7 @@ module.exports = {
             },
           };
       
-          await product.findOne(dataProduct).then(function(item){
-              console.log(item)
+          await models.product.findOne(dataProduct).then(function(item){
                 res.status((item)?200:404).json({
                     "status" : (item)?"success":"error",
                     "message" : (item)?"":"ID Not Found.",
@@ -134,7 +131,7 @@ module.exports = {
 
     list: async (req, res) => {
              
-          await product.findAll().then(function(item){
+          await models.product.findAll().then(function(item){
                 res.status((item)?200:404).json({
                     "status" : (item)?"success":"error",
                     "message" : (item)?"":"ID Not Found.",

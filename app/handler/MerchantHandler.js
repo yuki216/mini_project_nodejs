@@ -1,4 +1,4 @@
-const merchant = require(`../models/merchant`)
+const {models} = require(`../storages`)
 const bcrypt = require('bcrypt');
 //validator
 const Validator = require('fastest-validator');
@@ -10,7 +10,7 @@ module.exports = {
             const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
             const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')           
 
-          const user = await merchant.findOne({
+          const user = await models.merchant.findOne({
             where: { phone_number: login }
           });
         
@@ -23,7 +23,7 @@ module.exports = {
 
         
           const isValidPassword = await bcrypt.compare(password, user.password);
-          //console.log(isValidPassword, password)
+          //console.log(isValidPassword, bcrypt.(password), user)
           if (!isValidPassword) {            
             res.set('WWW-Authenticate', 'Basic realm="401"') 
            return res.status(401).json({
@@ -70,7 +70,7 @@ module.exports = {
         }
 
         const password = await bcrypt.hash(req.body.password, 10);
-        await merchant.create({
+        await models.merchant.create({
             phone_number: req.body.phone_number,
             password: password,
             name:req.body.name,
@@ -90,7 +90,6 @@ module.exports = {
             })
         });
     },
-
     remove: async (req, res) => {
         const dataMerchant = {
             where: {
@@ -98,10 +97,10 @@ module.exports = {
             },
           };
       
-        await merchant.destroy(dataMerchant).then(function(item){
-                res.status((item === 0)?404:200).json({
-                    "status" : (item === 0)?"error":"success",
-                    "message" : (item === 0)?"ID Not Found.":"Delete merchant success."
+        await models.merchant.destroy(dataMerchant).then(function(item){
+                res.status((item)?200:404).json({
+                    "status" : (item)?"success":"error",
+                    "message" : (item)?"Delete merchant success.":"ID Not Found."
                 });
             }).catch(function (err) {
                 res.status(400).json({

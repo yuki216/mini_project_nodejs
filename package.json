@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,9 @@
     "nodemon": "^2.0.15",
     "sequelize": "^6.12.5"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },  
   "devDependencies": {
     "jest": "^27.5.1",
     "node-mocks-http": "^1.11.0"
