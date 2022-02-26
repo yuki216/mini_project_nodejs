@@ -1,4 +1,4 @@
-const product = require(`../models/product`)
+const {product} = require(`../models/product`)
 
 //validator
 const Validator = require('fastest-validator');
@@ -40,7 +40,7 @@ module.exports = {
         });
     },
 
-    delete: async (req, res) => {
+    deleted: async (req, res) => {
         const dataProduct = {
             where: {
               id: parseInt(req.params.id),
@@ -96,9 +96,9 @@ module.exports = {
         dataProduct.price = req.body.price || dataProduct.price;
 
         await dataProduct.save().then(function(item){
-            res.status((item === 0)?404:200).json({
-                "status" : (item === 0)?"error":"success",
-                "message" : (item === 0)?"ID Not Found.":"Update product success."
+            res.status((item)?200:404).json({
+                "status" : (item)?"success":"error",
+                "message" : (item)?"Update product success.":"ID Not Found."
             });
         }).catch(function (err) {
             res.status(400).json({
@@ -117,9 +117,10 @@ module.exports = {
           };
       
           await product.findOne(dataProduct).then(function(item){
-                res.status((item === 0)?404:200).json({
-                    "status" : (item === 0)?"error":"success",
-                    "message" : (item === 0)?"ID Not Found.":"",
+              console.log(item)
+                res.status((item)?200:404).json({
+                    "status" : (item)?"success":"error",
+                    "message" : (item)?"":"ID Not Found.",
                     "data": item
                 });
             }).catch(function (err) {
@@ -134,10 +135,9 @@ module.exports = {
     list: async (req, res) => {
              
           await product.findAll().then(function(item){
-              console.log(item)
-                res.status((item === 0)?404:200).json({
-                    "status" : (item === 0)?"error":"success",
-                    "message" : (item === 0)?"ID Not Found.":"",
+                res.status((item)?200:404).json({
+                    "status" : (item)?"success":"error",
+                    "message" : (item)?"":"ID Not Found.",
                     "data": item
                 });
             }).catch(function (err) {
