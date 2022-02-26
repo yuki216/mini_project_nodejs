@@ -7,9 +7,9 @@ This mini project for RestFul Api using Node JS and Javascript.
 ```console
 -app
  --handler
- --infrastructures
+ --storages
+   --models
  --middleware
- --models
  --routes
 -config
 -migrations
