@@ -126,4 +126,24 @@ jest.mock("../../app/storages", () => {
     });
    });
 
+   test("logout merchants returns an existing merchants", async () => {
+    const request = httpMocks.createRequest({
+      method: "POST",
+      url: "/api/merchants/logout",
+      cookies: {
+        uid: 1,
+        name:"Yuki"
+      }
+    });
+    const response = httpMocks.createResponse();
+      
+    await logout(request, response);
+   
+    expect(response.statusCode).toEqual(200);
+    expect(response._getJSONData()).toEqual({
+        "status" : "success",
+        "message" : "cookie was cleared"
+    });
+   });
+
    
