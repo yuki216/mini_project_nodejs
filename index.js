@@ -15,9 +15,7 @@ app.use(cors())
 app.use(cookieParser());
 app.use("/api/merchants",merchant)
 app.use("/api/products",product)
-morgan('combined', {
-    skip: function (req, res) { return res.statusCode < 400 }
-})
+
   
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`)

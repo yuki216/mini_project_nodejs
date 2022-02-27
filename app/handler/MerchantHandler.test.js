@@ -42,16 +42,8 @@ jest.mock("../../app/storages", () => {
     });
    
     await login(request, response);
-   
     expect(response.statusCode).toEqual(200);
-    expect(response._getJSONData()).toEqual({
-        "status" : "success",
-        "message" : "login success",
-        "data" : {
-          "id": 1,
-          "name": "Yuki"
-        }
-    });
+    expect(response._getJSONData().status).toEqual("success");
    });
 
    test("register merchants returns an existing merchants", async () => {

@@ -34,7 +34,8 @@ jest.mock("../../app/storages", () => {
         name: "Warteg Kharisma Bahari",
         quantity: 200,
         price: 5000,
-        merchant_id:1
+        merchant_id:1,
+        update: jest.fn()
     });
    
     await get(request, response);
@@ -163,13 +164,13 @@ jest.mock("../../app/storages", () => {
     });
     const response = httpMocks.createResponse();
    
-    mockFindOneProduct.mockResolvedValue({
+    mockFindOneProduct.mockResolvedValue({update : jest.fn({
         id: "1",
         name: "Warteg Kharisma Bahari",
         quantity: 20,
         price: 6000,
         merchant_id:1
-    });
+    })});
    
     await update(request, response);
    

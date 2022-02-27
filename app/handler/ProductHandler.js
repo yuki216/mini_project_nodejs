@@ -108,6 +108,7 @@ module.exports = {
     },
 
     get: async (req, res) => {
+        //console.log(req.merchantID, req.merchantName)
         const dataProduct = {
             where: {
               id: parseInt(req.params.id),

@@ -1,5 +1,7 @@
 const {models} = require(`../storages`)
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken")
+
 //validator
 const Validator = require('fastest-validator');
 const v = new Validator();
@@ -32,14 +34,21 @@ module.exports = {
             });
           }
         
-          res.cookie('uid', user.id)
-          res.cookie('name', user.name)
+          const merchantId = user.id;
+          const merchantName = user.name;
+          const accessToken = jwt.sign({ merchantId, merchantName }, "Yuki-Token-123", {
+              expiresIn: process.env.ACCESS_TOKEN_EXIPRY || 604800
+          });
+          const refreshToken = jwt.sign({ merchantId, merchantName }, "Yuki-Token-123", {
+              expiresIn: process.env.REFRESH_TOKEN_EXIPRY || 604800
+          });
+          //console.log(accessToken,refreshToken)
           return res.json({
             "status": 'success',
             "message":'login success',
             "data": {
-              id: user.id,
-              name: user.name
+              token: accessToken,
+              refreshToken: refreshToken
             }
           });
     },
